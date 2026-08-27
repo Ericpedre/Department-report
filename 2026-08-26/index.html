@@ -1,0 +1,741 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apartamentos 2026-08-26</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#14171a;--mut:#5b6570;--bd:#e3e7ec;
+--ok:#0f7b3f;--okbg:#e8f6ee;--rev:#8a6100;--revbg:#fdf3dc;--no:#8a2233;--nobg:#fbeaec;
+--star:#5b02c5;--starbg:#f1e8ff}
+@media(prefers-color-scheme:dark){:root{--bg:#12151a;--card:#1a1f26;--tx:#e8ecf1;
+--mut:#98a3b0;--bd:#2b333d;--ok:#5cd08a;--okbg:#12301f;--rev:#e0b34d;--revbg:#332a12;
+--no:#f08a9a;--nobg:#331a1f;--star:#c9a4ff;--starbg:#2a1c42}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:var(--bg);color:var(--tx);
+font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:21px;margin:0 0 4px}
+.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+.resumen{background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--star);
+padding:12px 14px;border-radius:8px;margin-bottom:18px}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);
+margin:22px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;
+margin-bottom:10px;overflow:hidden;display:flex;gap:12px}
+.card.star{border-color:var(--star);box-shadow:0 0 0 1px var(--star)}
+.foto{width:132px;min-width:132px;height:132px;object-fit:cover;background:var(--bd)}
+.body{padding:10px 12px 10px 0;flex:1;min-width:0}
+.t{font-weight:600;margin-bottom:3px}
+.t a{color:inherit;text-decoration:none}
+.t a:hover{text-decoration:underline}
+.precio{font-size:19px;font-weight:700}
+.datos{color:var(--mut);font-size:13px;margin:3px 0}
+.razon{font-size:13.5px;margin-top:6px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;
+border-radius:99px;text-transform:uppercase;letter-spacing:.04em;margin-right:5px}
+.cumple{background:var(--okbg);color:var(--ok)}
+.revisar{background:var(--revbg);color:var(--rev)}
+.descartado{background:var(--nobg);color:var(--no)}
+.gana{background:var(--starbg);color:var(--star)}
+.incluye{font-size:12.5px;color:var(--mut);margin-top:4px}
+.vacio{background:var(--card);border:1px dashed var(--bd);padding:22px;
+text-align:center;color:var(--mut);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left}
+.inc{background:var(--nobg);border:1px solid var(--no);padding:10px 14px;
+border-radius:8px;margin-bottom:12px;font-size:13.5px}
+.inc summary{cursor:pointer;color:var(--no);font-size:14px}
+.inc p{margin:8px 0}
+.inc.avisos{background:var(--revbg);border-color:var(--rev)}
+.inc.avisos summary{color:var(--rev)}
+footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--bd);
+color:var(--mut);font-size:12px}
+.scroll{overflow-x:auto}
+</style></head><body><div class="wrap">
+<h1>Apartamentos — 2026-08-26</h1>
+<div class="sub">Sin novedades hoy · 96 en tus zonas de 570 revisados ·
+vara actual: PH Mystic Village $650, 2rec/2baños</div>
+<details class="inc">
+<summary><b>Incidente resuelto solo</b> — 2026-08-26</summary>
+<p><b>Qué falló:</b> El paso fetch murio en seco con 0 anuncios: ParseError soft-404 en https://www.encuentra24.com/panama-es/bienes-raices-alquiler-de-apartamentos?q=f_price.0-750 (HTTP 200 pero sin initialSearchUrl ni metadata). La guarda de soft-404 hizo exactamente lo que tenia que hacer y acerto en el diagnostico: el slug de categoria estaba mal.</p>
+<p><b>Qué investigué:</b> 1) estado_fallo.txt apuntaba al slug &#x27;bienes-raices-alquiler-de-apartamentos&#x27;. 2) git diff mostro que fetch.py tenia una modificacion SIN COMMITEAR que revertia CATEGORIES[0] de &#x27;bienes-raices-alquiler-apartamentos&#x27; (la version commiteada en 5f50bff / tag known-good) al viejo &#x27;bienes-raices-alquiler-de-apartamentos&#x27;, que DECISIONES.md ya documenta como muerto desde la investigacion inicial. O sea: no fue el sitio el que cambio, fue el codigo local el que se movio hacia atras. 3) Verifique contra el sitio en vivo con curl los tres slugs: &#x27;-de-apartamentos&#x27; devuelve 200 con 22 KB y CERO &#x27;initialSearchUrl&#x27; (soft-404 real); &#x27;alquiler-apartamentos&#x27; devuelve 200 con 56 KB e initialSearchUrl=/panama-es/bienes-raices-alquiler-apartamentos?q=f_price.0-750, con el f_price intacto; &#x27;alquiler-apartamentos-amueblados&#x27; sigue bien. Guarde los tres HTML en diag/2026-08-26_*.html. 4) Corri el parser real sobre ese HTML: 20 anuncios por pagina, metadata total=460 (normal) y 110 (amueblados), contra 455 y 113 de ayer. La estructura RSC de Next.js NO cambio: id, title, price_value, rooms, location.locality y principalImage siguen donde estaban. 5) estado.db tabla salud solo tiene una fila historica (2026-08-25: 568 anuncios, 89 en zona, 29 requests), y logs/ y diag/ estaban vacios, asi que no hay una serie larga para comparar: no hubo desplome progresivo. La rotura es puntual de hoy, introducida en el working tree (fetch.py con mtime 23:13, el mismo minuto que estado_fallo.txt). 6) Sin señales de bloqueo en ningun momento: cero 403, cero 429, las 29 requests pasaron limpias.</p>
+<p><b>Qué corregí:</b> Revertí CATEGORIES[0] en fetch.py a &#x27;bienes-raices-alquiler-apartamentos&#x27;, que es el slug que el sitio sirve hoy y el que ya estaba commiteado en known-good. Un solo caracter de cambio; no toque parsing, ni filtros, ni delays, ni el resto del pipeline. Verificado punta a punta: python3 fetch.py corrio completo y devolvio anuncios=570 requests=29 avisos=1 bloqueado=False, exit 0, con el unico aviso de siempre (&#x27;5 precios fuera de rango sensato&#x27;, ayer eran 6). Los 570 anuncios tienen precio, zona y foto en el 100% de los casos. No corri criterio.sh porque cuesta plata y run.sh ya reintenta la corrida entera al ver resuelto:true.</p>
+<p><b>Pendiente de vos:</b> Nada que necesite de vos para que mañana ande. Un solo dato para que lo sepas, no una accion: la rotura no vino del sitio sino de una edicion local sin commitear que deshizo el arreglo del slug. Si fue la prueba de autodiagnostico de DECISIONES.md (punto 3 de Verificacion), quedo pasada. Si no fue vos, vale la pena mirar quien escribio fetch.py a las 23:13.</p></details><details class="inc avisos"><summary><b>Avisos de la corrida</b> (1)</summary><ul><li>5 precios fuera de rango sensato</li></ul></details>
+<div class="resumen">Día sin movimiento: 570 anuncios bajados, 96 en zona, 0 nuevos, 0 desaparecidos y ningún cambio de precio, así que no emití ningún veredicto nuevo ni abrí fotos — fotos_del_dia.json vino vacío, que es lo coherente cuando no hay nada nuevo que mirar. Mystic Village sigue activo a $650 con sus 2 rec / 2 baños y nadie lo movió: la vara queda donde estaba y hoy nada la supera. Lo que sí vale tu tiempo son dos pendientes que dependen de vos: llamar por el 32389361 (Parque Lefevre, $550 amoblado, línea blanca completa, piso 19 con balcón y piscina) para confirmar si son 2 baños o 1, porque si son 2 le gana a Mystic por $100 menos; y pegar en descartados.txt el ID del Llano Bonito que descartaste por feo, que sigue sin ID y por eso sigue haciendo ruido en el reporte.</div>
+<h2>Nuevos hoy</h2><div class='vacio'>Nada nuevo hoy. El proceso corrió bien.</div>
+<h2>Activos que cumplen todo (9)</h2><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/64/95/19/32649519_f2db8dbc7df677bbbe18273a97fa0bb6-bfe6281" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-en-ph-mystic-village-don-bosco/32649519" target="_blank" rel="noopener">Alquiler Apartamento en PH Mystic Village, Don Bosco</a></div>
+<div class="precio">$650</div>
+<div class="datos">2 rec · 2 baños · 1 est · 62 m² · Don Bosco</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">La vara a superar, y las fotos la sostienen: split a la vista en la sala, lavandería con lavadora y secadora, nevera y estufa, todo limpio y bien iluminado. Sigue siendo el mejor equilibrio precio-equipamiento de la lista.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/81/70/47/32817047_00892cb51c214965e01244fdc67d91da-63c0f77" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/alquilo-apartamento-en-residencial-costa-del-este-campo-limberg-dc/32817047" target="_blank" rel="noopener">Alquilo Apartamento en Residencial Costa del Este Campo Limberg DC</a></div>
+<div class="precio">$650</div>
+<div class="datos">2 rec · 2 baños · 1 est · 60 m² · Juan Díaz</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">Mismo precio que Mystic con 2 rec / 2 baños y amoblado de verdad (sillones, comedor, nevera, estufa). Pero son 60 m2, el A/C está solo en la recámara principal y no trae lavadora; la cocina se ve funcional pero vieja.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/20/64/32902064_7d000df" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/ph-4-islas-3-recamaras-2-banos-piscina-frente-al-metro/32902064" target="_blank" rel="noopener">PH 4 ISLAS, 3 RECÁMARAS, 2 BAÑOS, PISCINA, FRENTE AL METRO!!</a></div>
+<div class="precio">$699 + $1 mant.</div>
+<div class="datos">3 rec · 2 baños · 1 est · 75 m² · Parque Lefevre</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">3 rec / 2 baños por $699 con mantenimiento y gas comunal incluidos, nevera y lavadora. Pero el A/C es solo en la sala y no tiene secadora, así que por $49 más que Mystic Village te dan un cuarto extra y menos equipamiento.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/85/05/57/32850557_1bdfe4b51167f8368d5c8273e0614821-3f8d865" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-don-bosco/32850557" target="_blank" rel="noopener">ALQUILER APARTAMENTO DON BOSCO</a></div>
+<div class="precio">$700</div>
+<div class="datos">3 rec · 2 baños · 1 est · 71 m² · Juan Díaz</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">Cocina con nevera de acero, estufa a gas y campana, sala amplia y limpia. 3 rec / 2 baños con 2 aires y centro de lavado por $700. Bien equipado, pero $50 más caro que Mystic Village por un cuarto que no necesitás.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/78/93/53/32789353_ce2ec80d2008b4be4f56a26585ced360-8bef7a5" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-cd-radial-juan-diaz-27ml1021/32789353" target="_blank" rel="noopener">ALQUILER APARTAMENTO CD RADIAL JUAN DIAZ 27ML1021</a></div>
+<div class="precio">$700 + $1 mant.</div>
+<div class="datos">2 rec · 2 baños · 1 est · 99 m² · Ciudad Radial</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">2 rec / 2 baños, 99 m2, amoblado, en Radiant Tower. El balcón de las fotos se ve nuevo y bien terminado. A $700 y en Ciudad Radial, que es tu última zona por preferencia propia.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/85/58/50/32855850_ef426b8" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/don-bosco-oportunidad-3-rec-piscina-elevador/32855850" target="_blank" rel="noopener">DON BOSCO / OPORTUNIDAD / 3 REC / PISCINA / ELEVADOR</a></div>
+<div class="precio">$700</div>
+<div class="datos">3 rec · 2 baños · 1 est · 71 m² · Don Bosco</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">3 rec / 2 baños, 71 m2, piso 17 con vista, estufa, nevera, centro de lavado y 2 aires, con mantenimiento incluido. Se ve limpio y luminoso en las fotos. Pierde contra Mystic solo por los $50 de diferencia.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/72/94/08/32729408_e88519f0ab22a60eddbee2cec1f55767-ac5e1a4" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-amoblado-de-2-recamaras-en-alquiler-torres-del-este-don-bosco/32729408" target="_blank" rel="noopener">Apartamento amoblado de 2 recámaras en alquiler – Torres del Este, Don Bosco</a></div>
+<div class="precio">$700</div>
+<div class="datos">2 rec · 2 baños · 1 est · Don Bosco</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">2 rec / 2 baños totalmente amoblado en Torres del Este, a 300 m del metro, con nevera y estufa. A $700 es $50 más que Mystic por prestaciones parecidas, y el texto no confirma aires acondicionados.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/86/11/83/32861183_c16a6e2e4062df1f6d92a4d6138b2d90-69f47f5" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-de-apartamento-linea-blanca-don-bosco/32861183" target="_blank" rel="noopener">ALQUILER DE APARTAMENTO / LÍNEA BLANCA / DON BOSCO</a></div>
+<div class="precio">$700</div>
+<div class="datos">3 rec · 2 baños · 1 est · 72 m² · Don Bosco</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">3 rec / 2 baños, línea blanca completa y A/C en sala y recámara principal por $700 en Don Bosco, con piscina. El anuncio es claro y honesto sobre dónde están los aires. No tiene fotos bajadas para opinar del edificio.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/69/42/21/32694221_ef307e0010b5ca7170a24d8925bead34-b2fee7e" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/tu-nuevo-hogar-te-espera-espectacular-apartamento-sobre-la-via-espana/32694221" target="_blank" rel="noopener">Tu Nuevo Hogar Te Espera: Espectacular Apartamento sobre la Vía España...!</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 2 baños · 1 est · 80 m² · Parque Lefevre</div>
+<span class="tag cumple">cumple</span>
+<div class="razon">2 rec / 2 baños con baño dentro de cada cuarto, aire acondicionado en las dos recámaras, nevera, estufa y centro de lavado, piso 11 con piscina y gimnasio. Cumple todo, pero a $750 está en el techo del rango.</div>
+
+</div></div>
+<h2>A revisar y descartados (87)</h2><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/68/45/27/32684527_1337e8e" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/tu-nuevo-hogar-en-panama-viejo-te-esta-esperando/32684527" target="_blank" rel="noopener">Tu nuevo hogar en Panamá Viejo te está esperando</a></div>
+<div class="precio">$375</div>
+<div class="datos">2 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">$375 con 2 recámaras con clóset, aire acondicionado y estacionamiento, que es un precio difícil de ignorar. Pero es 1 baño, viene vacío y las condiciones son duras: sin niños, sin mascotas, apuntado a estudiantes y con dos precios distintos en el mismo texto.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/03/66/32890366_02f9085" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/se-alquila-apartamento-de-2-recamaras-en-parque-lefevre/32890366" target="_blank" rel="noopener">Se alquila apartamento de 2 Recamaras en Parque Lefevre</a></div>
+<div class="precio">$475</div>
+<div class="datos">2 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">$475 negociable con 2 rec, 1 baño y estacionamiento en planta baja, cerca del 12 de Octubre. Es el precio más bajo del lote que igual conserva parking, pero no menciona línea blanca ni aires y solo trae una foto.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/78/94/53/32789453_37c2f2c" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-de-apartamento/32789453" target="_blank" rel="noopener">Alquiler de apartamento</a></div>
+<div class="precio">$500</div>
+<div class="datos">3 rec · 1 baños · 1 est · Don Bosco</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">$500 con 3 recámaras y estacionamiento en Don Bosco. Las fotos muestran una remodelación reciente pero de bajo presupuesto: paneles símil mármol en la pared y techo de PVC madera, cocina sin electrodomésticos. La descripción está mal escrita y se contradice sola.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/82/21/32/32822132_94960b3" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/se-alquila-casa-amueblada/32822132" target="_blank" rel="noopener">Se alquila casa amueblada</a></div>
+<div class="precio">$500</div>
+<div class="datos">2 rec · 1 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Es una casa, no un apartamento: $500 amoblada con nevera, microondas, estufa y lavadora, estacionamiento privado y portón. Pero es 1 baño, no menciona aires y la fachada de la foto se ve humilde, con reja corrida y cableado a la vista. La cocina remodelada se ve mejor que el frente.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/41/44/32894144_5cb51e00098bce986d270daf044ccfdf-ce4f8b2" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/residencial-parque-lefevre-50mts-2r-1b-500-00/32894144" target="_blank" rel="noopener">Residencial Parque Lefevre. 50mts 2r 1b $500.00</a></div>
+<div class="precio">$500</div>
+<div class="datos">2 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">50 m2 con 2 rec, 1 baño y estacionamiento por $500. Viene vacío y es un cuarto piso sin elevador, que con mudanza y compras es un costo real. Barato, pero pide trabajo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/72/44/88/32724488_be3cc84" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apto-llano-bonito-2-recamaras/32724488" target="_blank" rel="noopener">Alquiler Apto Llano Bonito 2 Recamaras</a></div>
+<div class="precio">$550</div>
+<div class="datos">3 rec · 2 baños · 1 est · 67 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">A $550 es de lo más barato con 2 baños, y en la foto se ve un split instalado y el apartamento limpio, con persianas puestas. Dos advertencias: el anuncio llegó sin descripción y el título dice 2 recámaras mientras la ficha dice 3. Viene vacío.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/65/01/09/32650109_892ff528f7feb4eeeae62f3bdba0554c-4bd49d3" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquilo-apartamento-en-cantabria-iii/32650109" target="_blank" rel="noopener">ALQUILO APARTAMENTO EN CANTABRIA III</a></div>
+<div class="precio">$550</div>
+<div class="datos">2 rec · 1 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">$550 en Cantabria III con portón eléctrico y parque, cerca del metro. El dueño es honesto: &#x27;sin amoblar ni línea blanca&#x27;. La foto es de un ambiente vacío correcto pero sin gracia. Con 1 baño y sin nada adentro, el ahorro se evapora el primer mes.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/38/93/61/32389361_72ac258" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/parque-lefevre-oportunidad-2-rec-metro-balcon/32389361" target="_blank" rel="noopener">PARQUE LEFEVRE / OPORTUNIDAD / 2 REC / METRO / BALCÓN</a></div>
+<div class="precio">$550</div>
+<div class="datos">2 rec · 2 baños · 1 est · 70 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El activo más interesante de la lista: $550 amoblado, con nevera, estufa, lavadora y secadora, mantenimiento incluido, piso 19 con balcón y piscina. La trampa es que la ficha dice 2 baños y el texto dice 1: si de verdad son 2, le gana a Mystic Village por $100 menos. Vale la llamada.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/42/85/32884285_39a28c4" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/ph-mystic-gates-llano-bonito/32884285" target="_blank" rel="noopener"> PH MYSTIC GATES – LLANO BONITO </a></div>
+<div class="precio">$575</div>
+<div class="datos">2 rec · 1 baños · 1 est · 50 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Mystic Gates a $575 con balcón y área social. El edificio en las tomas aéreas se ve blanco, cuidado y bien mantenido. Contra: 1 baño, 50 m2 y explícitamente vacío.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/59/11/50/32591150_a2323a86b5146a661839970e1d7f81b1-f3938e2" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-en-llano-bonito/32591150" target="_blank" rel="noopener">ALQUILER APARTAMENTO EN LLANO BONITO</a></div>
+<div class="precio">$575</div>
+<div class="datos">2 rec · 1 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Mismo PH Mystic Gates a $575, publicado por otra agente. El balcón de la foto se ve nuevo y limpio. Mismos peros: 1 baño y viene vacío.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/06/63/32890663_6f6b3e12168f800c05f39e9016540b27-d829747" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquilo-apartamento-ph-villa-natura-parque-lefevre/32890663" target="_blank" rel="noopener">Alquilo apartamento PH Villa Natura parque lefevre.</a></div>
+<div class="precio">$599</div>
+<div class="datos">2 rec · 2 baños · 1 est · 100 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">PH Villa Natura, 100 m2 por $599 con ficha de línea blanca completa. Pero el texto lo contradice todo: dice 1 baño (la ficha dice 2), dice $650 (la ficha dice $599) y dice que viene vacío. Es primer piso sin elevador.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/72/90/56/32729056_e365652" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquilo-residencial-llano-bonito/32729056" target="_blank" rel="noopener">ALQUILO RESIDENCIAL LLANO BONITO</a></div>
+<div class="precio">$600 + $1 mant.</div>
+<div class="datos">2 rec · 2 baños · 1 est · 66 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">En papel es bueno ($600, 2 rec / 2 baños, piscina, balcón) pero el A/C es solo en la sala y las fotos muestran el apartamento vacío aunque la ficha diga &#x27;amoblado&#x27;. Ojo: es Llano Bonito a $600 con 2 rec / 2 baños, el mismo perfil del que ya descartaste por feo — si es este, pegá el ID en descartados.txt.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/33/28/53/32332853_613c80a" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/las-acacias-oportunidad-2-rec-metro-conj-cerrado/32332853" target="_blank" rel="noopener">LAS ACACIAS / OPORTUNIDAD / 2 REC / METRO / CONJ CERRADO</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · 80 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">$600 con mantenimiento incluido y a pasos del metro Pedregal, pero el propio anuncio aclara &#x27;sin muebles ni línea blanca&#x27; aunque la ficha liste nevera y lavadora: la ficha miente. La foto muestra un ambiente vacío y de terminación básica.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/44/75/32884475_66cc8f12c27c72b6f42de192ccbd2e22-4b6c129" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-en-llano-bonito-ph-mystic-gates/32884475" target="_blank" rel="noopener">ALQUILER APARTAMENTO EN LLANO BONITO PH MYSTIC GATES</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El único Mystic Gates que confirma aires: en las fotos se ve el split nuevo con las etiquetas puestas, piso tipo mármol y buena luz por el balcón cerrado. A $600 negociable y con 1 solo baño, y viene sin línea blanca.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/73/19/22/31731922_571b393" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/las-acacias-oportunidad-2-rec-metro-conj-cerrado/31731922" target="_blank" rel="noopener">LAS ACACIAS / OPORTUNIDAD / 2 REC / METRO / CONJ CERRADO</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · 97 m² · Don Bosco</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Es el mismo anuncio de Las Acacias que el 32332853, con texto y foto idénticos, republicado en la categoría de amueblados aunque diga &#x27;sin muebles ni línea blanca&#x27;. Mismo veredicto y misma advertencia.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/69/02/32886902_fe758ea60a91d3eec6a875dcdc2adcc2-2419b58" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-en-alquiler-ph-villa-margarita-parque-lefevre/32886902" target="_blank" rel="noopener">Apartamento en Alquiler – PH Villa Margarita | Parque Lefevre</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · 53 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">2 rec / 1 baño de 53 m2 con estacionamiento por $600, en un edificio de 1999. El anuncio llegó sin descripción y sin equipamiento, así que no hay con qué juzgarlo: es una llamada, no un candidato.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/71/51/55/32715155_a0be1f015b598657cc49603f9f32640c-13e72db" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-parque-lefevre/32715155" target="_blank" rel="noopener">ALQUILER APARTAMENTO PARQUE LEFEVRE</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El mismo PH Henrry a $600 publicado por otra agente, con cuatro líneas de descripción. No dice si viene vacío ni menciona equipamiento; con 1 baño, hay que confirmar todo por teléfono.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/76/40/32887640_c9e0710" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/ph-henrry-parque-lefevre/32887640" target="_blank" rel="noopener"> PH HENRRY – PARQUE LEFEVRE </a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · 60 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">PH Henrry, 65 m2, 2 rec / 1 baño con parking por $600. El anuncio dice explícitamente &#x27;Vacío&#x27; y no menciona aires, así que al ahorro hay que restarle la línea blanca completa.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/27/47/32842747_6a52dbf1fcb0d468ed5d5c781eee0e43-10d1dc7" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-de-2-recamaras-en-parque-lefevre/32842747" target="_blank" rel="noopener">Alquiler Apartamento de 2 Recámaras en Parque Lefevre</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · 60 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">PH Tulipán, 60 m2 con balcón con vista, recámaras con clóset y estacionamiento por $600. La descripción es detallada pero no nombra ni un electrodoméstico ni un aire, lo que normalmente significa que no los hay.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/78/91/89/32789189_c86fbe4e89bd8be068b78ee6e3583cac-caeb308" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-en-alquiler-en-juan-diaz-rj/32789189" target="_blank" rel="noopener">Apartamento en Alquiler en Juan Diaz RJ</a></div>
+<div class="precio">$650</div>
+<div class="datos">2 rec · 2 baños · 1 est · 99 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">99 m2 con 2 rec / 2 baños por $650 en Radiant Tower, mismo precio que Mystic y más espacio. El problema es lo que muestran las fotos: totalmente vacío, cocina sin electrodomésticos y ni un split en la pared. Sin línea blanca ni aires no compite.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/66/16/61/32661661_abddb74" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/en-alquiler-apartamento-centrico-y-pet-friendly-en-via-espana/32661661" target="_blank" rel="noopener">¡En Alquiler! Apartamento Céntrico y Pet-Friendly en Vía España</a></div>
+<div class="precio">$650</div>
+<div class="datos">2 rec · 1 baños · 1 est · 64 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">2 rec / 1 baño de 64 m2 con balcón sobre Vía España a $650. El anuncio llegó sin descripción y la ficha de equipamiento está vacía, así que no hay nada que evaluar: hay que preguntar por línea blanca y aires.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/21/08/32902108_015c2f3" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/ph-4-islas-2-recamaras-1-bano-linea-blanca-a-a-piscina/32902108" target="_blank" rel="noopener">PH 4 ISLAS, 2 RECÁMARAS, 1 BAÑO, LINEA BLANCA, A/A, PISCINA!!!</a></div>
+<div class="precio">$650 + $1 mant.</div>
+<div class="datos">2 rec · 1 baños · 1 est · 65 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El mejor hallazgo del día: $650 con línea blanca completa (incluye lavadora y secadora), aires acondicionados y mantenimiento + gas comunal incluidos, piso 10 con piscina y a 2 min del metro. Le falta el segundo baño, por eso no es &#x27;cumple&#x27;.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/27/64/32902764_c3630ac" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/ph-4-islas-via-cincuentenario/32902764" target="_blank" rel="noopener"> PH 4 ISLAS – VIA CINCUENTENARIO </a></div>
+<div class="precio">$650</div>
+<div class="datos">2 rec · 1 baños · 1 est · 67 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El mismo PH 4 Islas a $650 pero vacío: la ficha lista nevera, estufa, lavadora y secadora y el texto dice &#x27;Vacío&#x27;. Con 1 solo baño y sin nada adentro, el ahorro se te va en amoblar.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/33/35/32903335_e6de861" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/se-alquila-apartamento-ph-4-isla-cerca-de-estacion-de-metro/32903335" target="_blank" rel="noopener">se alquila apartamento PH 4 isla cerca de estación de metro</a></div>
+<div class="precio">$650 + $98 mant.</div>
+<div class="datos">2 rec · 1 baños · 1 est · 70 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Mismo edificio y precio que los otros 4 Islas, con nevera, estufa, lavadora y secadora. Un solo baño y, a diferencia de sus vecinos, acá el mantenimiento son $98 aparte: el costo real es $748, no $650.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/87/68/22/32876822_90dc43c2120bfa07fcc313ae1478549e-5f0209e" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/pm-via-cincuentenario-linea-blanca-2-rec-1-banos-1-estac-650/32876822" target="_blank" rel="noopener">PM VIA CINCUENTENARIO LINEA BLANCA 2 REC 1 BAÑOS 1 ESTAC $650</a></div>
+<div class="precio">$650 + $1 mant.</div>
+<div class="datos">2 rec · 1 baños · 1 est · 1 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">$650 con nevera, estufa, lavadora y secadora en PH Plaza Cincuentenario. Es 1 baño, el anuncio no menciona aires y la ficha trae los metros en &#x27;1&#x27;, o sea que el dato de área no sirve.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/69/58/32/32695832_5c2b318f552e1ee753ea454c6b43cee7-3240800" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-en-alquiler-en-las-acacias-rj/32695832" target="_blank" rel="noopener">Apartamento en Alquiler en Las Acacias RJ</a></div>
+<div class="precio">$690</div>
+<div class="datos">2 rec · 1 baños · 1 est · 64 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El mismo edificio de Las Acacias que el anterior, publicado por otra agencia: sala limpia con cocina tipo barra y nevera. Ficha con nevera, microondas, lavadora y secadora pero sin estufa listada y sin mención de aires. Un baño por $690 es caro.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/69/64/72/32696472_025acf974606f65dfdac28c44dd8804c-a4b6d16" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-en-alquiler-en-las-acacias-27jack302/32696472" target="_blank" rel="noopener">Apartamento en Alquiler en Las Acacias 27jack302</a></div>
+<div class="precio">$690 + $1 mant.</div>
+<div class="datos">2 rec · 1 baños · 1 est · 64 m² · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">El anuncio mejor detallado del lote: 2 aires en las recámaras, estufa, horno, extractor, microondas, nevera, lavadora, secadora, persianas y lámparas. El edificio naranja de 3 niveles se ve cuidado. Contra: 1 baño, $690 y sin ascensor en un segundo piso.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/04/72/32900472_778ea624ff30b572ad9e0007fce9956a-e045e80" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquilo-apartamento-ph-4-islas-parque-lefevre-avenida-cincuentenario-frente-a-zona-paga-balboa/32900472" target="_blank" rel="noopener">Alquilo apartamento PH 4 Islas parque lefevre Avenida cincuentenario-Frente a Zona Paga Balboa</a></div>
+<div class="precio">$699</div>
+<div class="datos">3 rec · 3 baños · 2 est · 120 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">La ficha dice 3 baños y 2 estacionamientos, el texto dice 2 baños y 1 parking, y el precio publicado ($699) no coincide con el del texto ($750 negociable). Además está vacío. Hay que confirmar todo antes de moverse.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/14/77/32901477_79865fe7f6b1f6f28297f81a9e0b69f2-7eb921a" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquilo-apartamento-ph-vistas-de-chanis-frente-a-zona-paga-balboa-y-super-99/32901477" target="_blank" rel="noopener">Alquilo apartamento PH Vistas de Chanis-frente a zona paga balboa y super 99</a></div>
+<div class="precio">$699</div>
+<div class="datos">2 rec · 1 baños · 1 est · 100 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Amoblado con línea blanca completa y 100 m2 por $699, frente a la zona paga. Pierde por el baño único, el piso 1 sin elevador y que el texto pide $750 mientras la ficha dice $699.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/72/60/83/32726083_da3cb1c" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-las-acacias/32726083" target="_blank" rel="noopener">ALQUILER APARTAMENTO LAS ACACIAS</a></div>
+<div class="precio">$700</div>
+<div class="datos">2 rec · 2 baños · 2 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">2 rec / 2 baños con 2 estacionamientos y área social completa por $700. Las fotos muestran el apartamento vacío, con la cocina apenas armada: ni línea blanca ni aires a la vista, y el anuncio no los menciona.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/85/88/61/32858861_31edd00" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-las-acacias/32858861" target="_blank" rel="noopener">ALQUILER APARTAMENTO LAS ACACIAS</a></div>
+<div class="precio">$700</div>
+<div class="datos">2 rec · 2 baños · 2 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Es el mismo anuncio de Las Acacias republicado por la misma agente (texto idéntico al 32726083). La foto que bajó es de la piscina, que se ve grande y bien mantenida, pero del apartamento no se ve nada.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/79/32/86/32793286_0292623" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-las-acacias/32793286" target="_blank" rel="noopener">ALQUILER APARTAMENTO LAS ACACIAS</a></div>
+<div class="precio">$700</div>
+<div class="datos">2 rec · 2 baños · 2 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Tercera copia del mismo anuncio de Las Acacias, palabra por palabra. 2 rec / 2 baños y 2 parkings por $700, sin decir nada de línea blanca ni aires.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/90/00/47/32900047_aba336f" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/se-alquila-apartamento-en-ph-residencial-parque-del-este/32900047" target="_blank" rel="noopener">Se alquila apartamento en Ph Residencial parque del este</a></div>
+<div class="precio">$700</div>
+<div class="datos">2 rec · 2 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Recién remodelado y se nota: cocina nueva con tope de mármol, pisos blancos brillantes, todo a estrenar. Pero son $700, viene semi amoblado (una cama) y ni el texto ni las fotos muestran aire acondicionado, que es justo lo que no podés dar por sentado.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/66/11/30/32661130_fddcc83" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/apartamento-amoblado-don-bosco/32661130" target="_blank" rel="noopener">APARTAMENTO AMOBLADO DON BOSCO</a></div>
+<div class="precio">$700</div>
+<div class="datos">2 rec · 1 baños · 1 est · Don Bosco</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Trato directo con el dueño, 67 m2 amoblados con balcón y piscina. Pero es 1 baño por $700 y el anuncio no menciona ni un electrodoméstico ni un aire: por ese precio tendría que dar más.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/87/11/41/32871141_0859307627cdae43b54919cc57b8e880-2a0669d" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/costa-del-este-jardines-de-costa-del-este-amoblado/32871141" target="_blank" rel="noopener">Costa del Este | Jardines de Costa del Este | Amoblado</a></div>
+<div class="precio">$725</div>
+<div class="datos">2 rec · 1 baños · 1 est · 85 m² · Costa del Este</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Full amoblado con camas, línea blanca completa y aires inverter por $725. Está bien equipado de verdad, pero es 1 solo baño y el precio queda a $40 de lo que pagás hoy.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/87/14/57/32871457_ce269aa" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-en-alquiler-torres-de-cantabria-2-recamaras/32871457" target="_blank" rel="noopener">Apartamento en alquiler - Torres de Cantabria - 2 recamaras</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 2 baños · 1 est · 82 m² · Versalles</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Torres de Cantabria en Versalles, tu zona preferida: fotos con split en la pared, cocina con granito, estufa a gas, horno y nevera de acero. Se ve muy bien. Los peros son el precio ($750, más que tu alquiler actual) y que la descripción del anuncio vino vacía.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/50/01/19/32500119_d3fcaa7e12862d0cadd4bdc2928a7428-939d89b" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-ph-torres-de-cantabria-82-m-prg02/32500119" target="_blank" rel="noopener">ALQUILER – PH Torres de Cantabria 82 m² PRG02</a></div>
+<div class="precio">$750</div>
+<div class="datos">3 rec · 2 baños · 1 est · 82 m² · Versalles</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Cantabria en Versalles con 3 rec / 2 baños y ficha con nevera, estufa, lavadora y secadora. Las fotos del acceso y la torre muestran un conjunto cuidado y con buena presencia. A $750 y sin descripción real del anuncio.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/93/32/39/31933239_a7ce498" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/apartamento-en-alquiler-torres-de-cantabria-2-recamaras/31933239" target="_blank" rel="noopener">Apartamento en alquiler - Torres de Cantabria - 2 recamaras</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 2 baños · 1 est · 82 m² · Versalles</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Es el mismo apartamento de Cantabria que el 32871457 — fotos idénticas, otro anunciante. Mismo veredicto: se ve muy bien y está en Versalles, pero son $750 y el anuncio no trae descripción.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/53/48/32885348_89076a895104dbc5583417d7c0eebae9-826f2cf" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/se-alquila-practico-apartamento-en-torres-de-cantabria-t700-las-acacias-juan-diaz/32885348" target="_blank" rel="noopener">Se Alquila Práctico Apartamento en Torres de Cantabria T700 – Las Acacias, Juan Díaz</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 2 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">2 rec / 2 baños en Torres de Cantabria con piscina, pero el anuncio llegó sin descripción, así que no hay forma de saber si trae línea blanca o aires. A $750 hay que preguntarlo todo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/72/93/62/32729362_c79cc45" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-de-3-recamaras-en-alquiler-torres-del-este-don-bosco/32729362" target="_blank" rel="noopener">Apartamento de 3 recámaras en alquiler – Torres del Este, Don Bosco</a></div>
+<div class="precio">$750</div>
+<div class="datos">3 rec · 2 baños · 1 est · Don Bosco</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">3 rec / 2 baños de 77 m2 totalmente amoblado en Torres del Este, a 300 m del metro. El pero es el precio: $750, arriba de lo que pagás hoy, y sin mención de aires acondicionados.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/85/35/65/32853565_262c51c" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/se-alquila-apartamento-en-don-bosco/32853565" target="_blank" rel="noopener">Se alquila apartamento en Don Bosco</a></div>
+<div class="precio">$750</div>
+<div class="datos">3 rec · 2 baños · 1 est · Don Bosco</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">3 rec / 2 baños con estufa, extractor y centro de lavado por $750, estacionamiento bajo techo con portón eléctrico. Pero el aire está solo en el cuarto principal y el precio no deja margen de ahorro.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/73/15/91/32731591_ade1f2c710931f58db1293f124829849-984c666" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-en-las-acasias/32731591" target="_blank" rel="noopener">ALQUILER APARTAMENTO EN LAS ACASIAS</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 2 baños · 1 est · Juan Díaz</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">2 rec / 2 baños amoblado en Cantabria con área social completa por $750. Cumple la forma, pero el anuncio es de tres líneas, no menciona aires ni línea blanca y el precio está en el techo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/76/44/01/32764401_4e3d782" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-2rec-y-hermosa-vista-via-cincuentenario-cerca-al-metro/32764401" target="_blank" rel="noopener">APARTAMENTO 2REC Y HERMOSA VISTA VIA CINCUENTENARIO CERCA AL METRO</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 1 baños · 1 est · 70 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Ficha muy completa (nevera, microondas, estufa, lavaplatos, calentador, lavadora, secadora) y amoblado, con piscina y balcón. Pero la descripción vino truncada, es 1 baño y cuesta $750.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/28/84/32842884_066d08b" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-chanis-completamente-amoblado-a-pasos-de-la-zona-paga-metro/32842884" target="_blank" rel="noopener">Alquiler Apartamento Chanis Completamente Amoblado A pasos de la Zona Paga-Metro</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 2 baños · 1 est · 70 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Amoblado completo y bien cuidado según el anuncio, con nevera, estufa, lavadora y secadora, primer piso con puerta cochera a control remoto. La ficha dice 2 baños pero el texto dice 1, y a $750 &#x27;no negociable&#x27; se sale de la lógica de ahorro.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/76/17/32897617_55a2b599c796e26f959cb7bfa1e5089c-631cc78" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/4-islas-3rec-solo-750/32897617" target="_blank" rel="noopener">4 ISLAS 3REC SOLO $750</a></div>
+<div class="precio">$750</div>
+<div class="datos">3 rec · 2 baños · 1 est · 75 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">3 rec / 2 baños en el tope del rango ($750) pero incluye agua, gas y mantenimiento, lo que lo acerca bastante a tu $685 + luz + internet. El anuncio aclara que solo alquila el aire de la sala y no menciona línea blanca.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/79/51/81/32795181_9f66fd2" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquilo-apartamento/32795181" target="_blank" rel="noopener">Alquilo apartamento</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Dice tener todos los equipos de línea blanca, aires acondicionados y hasta TV, a un minuto de la zona paga de Balboa. Pero es 1 baño por $750, que es más de lo que pagás hoy por más apartamento.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/83/04/90/32830490_5d84e4ca509b76598aea0b57af269c37-a96c11e" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/parque-lefevre-ph-centennial-linea-blanca/32830490" target="_blank" rel="noopener">Parque Lefevre | PH Centennial | Línea Blanca</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 1 baños · 1 est · 70 m² · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">Línea blanca completa con aires tipo inverter y $749 que incluyen mantenimiento, agua y aseo, lo que lo deja más cerca de tu costo real de lo que parece. Pero la ficha dice 1 baño y el texto dice 2, y el precio está en el tope.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/67/43/32896743_e90c861" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/se-alquila-apartamento-en-chanis-750-amoblado-chanis/32896743" target="_blank" rel="noopener">Se Alquila Apartamento en Chanis, 750$ amoblado. Chanis</a></div>
+<div class="precio">$750</div>
+<div class="datos">2 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag revisar">revisar</span>
+<div class="razon">PH Vistas de Chanis amoblado, 2 rec / 1 baño con lavandería y estacionamiento. $750 no negociable por un solo baño y sin mención de aires: es de los más flojos del rango alto.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32395026" target="_blank" rel="noopener">Sin titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · 1 m² · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma de Punta Pacífica: sin título, precio $1, sin recámaras, sin baños, sin estacionamiento y con foto placeholder del portal. No es un anuncio real.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32400077" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Otro anuncio fantasma del mismo anunciante: precio $1 y todos los campos vacíos.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32278851" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32279113" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32345530" target="_blank" rel="noopener">Sin titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32316332" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32284658" target="_blank" rel="noopener">Sin titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32655178" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/30/29/51/32302951_fc076300b527d50c186850f2c4b81d43-ac20227" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32302951" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin recámaras ni estacionamiento declarados. Tiene un par de fotos en el portal pero ningún dato del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32659857" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32659881" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32596664" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32435344" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32634256" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32444800" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32706138" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32450954" target="_blank" rel="noopener">sin titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32677262" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32677373" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32581434" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32388136" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32616269" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">? rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: sin título, precio $1 y sin datos del inmueble.</div>
+
+</div></div><div class="card"><img class="foto" src="https://static.encuentra24.com/images/temp/img1.jpg" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/sin-titulo/32616328" target="_blank" rel="noopener">Sin Titulo</a></div>
+<div class="precio">$1</div>
+<div class="datos">2 rec · ? baños · 0 est · Costa del Este</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Anuncio fantasma: declara 2 recámaras pero el precio es $1, no tiene baños ni estacionamiento declarados y la foto es el placeholder del portal.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/70/47/32887047_878faa35210d57dd8a1ae1d3ad84d52e-0713cae" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-amplio-en-cerro-viento/32887047" target="_blank" rel="noopener">Alquiler Apartamento Amplio en Cerro Viento</a></div>
+<div class="precio">$300</div>
+<div class="datos">1 rec · 1 baños · 0 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara y sin estacionamiento. Falla los dos mínimos.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/86/96/14/32869614_109e8cc065784e6fdb669bef5e8f2270-703e82c" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/micro-apartamento-en-parque-lefevre-0015db/32869614" target="_blank" rel="noopener">Micro Apartamento en Parque Lefevre # 0015db</a></div>
+<div class="precio">$375</div>
+<div class="datos">1 rec · 1 baños · 0 est · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Micro apartamento de 18 a 20 m2, un solo ambiente y sin estacionamiento. Nada que ver con lo que buscás.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/87/25/97/32872597_7f58c67" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/mini-apartamento-panama-viejo-400/32872597" target="_blank" rel="noopener">MINI APARTAMENTO PANAMA VIEJO $400</a></div>
+<div class="precio">$400</div>
+<div class="datos">2 rec · 1 baños · 0 est · 38 m² · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Sin estacionamiento y lo aclara el anuncio. Además son 38 m2 y ni siquiera tiene aire instalado: dice que hay &#x27;facilidad para instalar&#x27; uno.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/67/28/32896728_b98ea93" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-de-2-habitaciones-en-don-bosco/32896728" target="_blank" rel="noopener">APARTAMENTO DE 2 HABITACIONES EN DON BOSCO</a></div>
+<div class="precio">$475</div>
+<div class="datos">2 rec · 1 baños · 0 est · Don Bosco</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">No tiene estacionamiento y el anuncio lo dice explícitamente, así que queda fuera por criterio. Lástima, porque $475 con agua y mantenimiento incluidos y un aire acondicionado era buen número.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/33/67/64/31336764_bff771" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apto-en-parque-lefevre/31336764" target="_blank" rel="noopener">ALQUILER APTO EN PARQUE LEFEVRE</a></div>
+<div class="precio">$500</div>
+<div class="datos">1 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara. Recién remodelado y céntrico, pero no cumple el mínimo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/88/45/25/32884525_fb013c26d03dbe87ddd79a06121542a6-53e9c02" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-apartamento-en-parque-lefevre/32884525" target="_blank" rel="noopener">ALQUILER APARTAMENTO EN PARQUE LEFEVRE</a></div>
+<div class="precio">$500</div>
+<div class="datos">1 rec · 1 baños · 1 est · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara y viene vacío. No llega al mínimo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/86/28/32/32862832_68123a2d2c7c4df1abda316df6688436-5e0c2fe" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-ph-henry/32862832" target="_blank" rel="noopener">ALQUILER | PH HENRY</a></div>
+<div class="precio">$500</div>
+<div class="datos">1 rec · 1 baños · 1 est · 50 m² · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara, en el mismo PH Henry. No llega al mínimo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/87/15/32/32871532_9cc74064a1f854f19f311cedfd084e40-3cb1157" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/parque-lefevre-edificio-casa-4/32871532" target="_blank" rel="noopener">Parque Lefevre, Edificio Casa 4</a></div>
+<div class="precio">$500</div>
+<div class="datos">1 rec · 1 baños · 0 est · 55 m² · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara y sin estacionamiento. Falla los dos mínimos.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/86/83/43/32868343_a0e789ed2347c30514fb4afcf8586a2a-1483ad1" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/alquilo-apartamento/32868343" target="_blank" rel="noopener">ALQUILO APARTAMENTO</a></div>
+<div class="precio">$600</div>
+<div class="datos">2 rec · 1 baños · 1 est · Juan Díaz</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">El anuncio no dice nada del apartamento, solo que hay farmacias y supermercados cerca. Las fotos son de baja resolución y con marca de agua de otro portal: una piscina de un conjunto amarillo desgastado y un pasillo pelado con una cortina roja. No hay con qué evaluarlo y lo que se ve no ayuda.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/79/78/59/32797859_9c6169c" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/amplio-apartamento-de-1-recamara-remodelado-con-linea-blanca/32797859" target="_blank" rel="noopener">Amplio Apartamento de 1 Recamara Remodelado con Linea Blanca</a></div>
+<div class="precio">$600</div>
+<div class="datos">1 rec · 1 baños · 0 est · 45 m² · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara y el estacionamiento es un cargo aparte. No cumple.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/65/05/32/32650532_b83b0eb9590d59e8439d00bb8537ce5e-f2f1f51" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos-amueblados/alquilo-apartamento-amoblado-de-1-recamara/32650532" target="_blank" rel="noopener">Alquilo apartamento amoblado de 1 recámara</a></div>
+<div class="precio">$625</div>
+<div class="datos">1 rec · 1.5 baños · 1 est · Don Bosco</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara. Está bien equipado (aires en sala y recámara, agua caliente, piscina) pero no llega al mínimo de 2.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/72/94/44/32729444_9d7e182" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-amoblado-de-1-recamara-en-alquiler-torres-del-este-don-bosco/32729444" target="_blank" rel="noopener">Apartamento amoblado de 1 recámara en alquiler – Torres del Este, Don Bosco</a></div>
+<div class="precio">$650</div>
+<div class="datos">1 rec · 1.5 baños · 1 est · Don Bosco</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara. Amoblado y bien ubicado, pero no cumple el mínimo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/44/22/21/31442221_156246" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-de-apartamento-amoblado-en-don-bosco-torres-del-este-piso-14/31442221" target="_blank" rel="noopener">Alquiler de apartamento amoblado en Don Bosco - Torres del Este - Piso 14</a></div>
+<div class="precio">$650</div>
+<div class="datos">1 rec · 1.5 baños · 1 est · 64 m² · Don Bosco</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara, en Torres del Este piso 14. No llega al mínimo de 2.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/44/23/23/31442323_d52988" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/apartamento-amoblado-alquiler-torres-del-este-don-bosco/31442323" target="_blank" rel="noopener">Apartamento amoblado - Alquiler - Torres del Este - Don Bosco</a></div>
+<div class="precio">$650</div>
+<div class="datos">1 rec · 1.5 baños · 1 est · 63 m² · Don Bosco</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara, es prácticamente el mismo anuncio que el 31442221 del mismo anunciante. No llega al mínimo.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/12/83/05/32128305_4d61af0" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/vive-en-un-lugar-inolvidable/32128305" target="_blank" rel="noopener">¡Vive en un lugar inolvidable!</a></div>
+<div class="precio">$650</div>
+<div class="datos">2 rec · 1 baños · 0 est · Brisas del Golf</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">Sin estacionamiento. Tiene 2 recámaras con aires y gimnasio, pero a $650 y en Brisas del Golf sin dónde dejar el carro no entra.</div>
+
+</div></div><div class="card"><img class="foto" src="https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/61/38/09/32613809_a23a0a" alt="" loading="lazy"><div class="body">
+<div class="t"><a href="https://www.encuentra24.com/panama-es/bienes-raices-alquiler-apartamentos/alquiler-de-apartamento-ph-don-omar-linea-blanca-ym/32613809" target="_blank" rel="noopener">ALQUILER DE APARTAMENTO PH DON OMAR LÍNEA BLANCA  YM</a></div>
+<div class="precio">$750</div>
+<div class="datos">1 rec · 1 baños · 1 est · 50 m² · Parque Lefevre</div>
+<span class="tag descartado">descartado</span>
+<div class="razon">1 sola recámara por $750. Ni el tamaño ni el precio tienen sentido para vos.</div>
+
+</div></div>
+
+<footer>Generado por la Raspberry Pi el 2026-08-26 23:41 (hora de Panamá).
+Para que algo deje de aparecer, agregá su ID a <code>descartados.txt</code>.
+La decisión final de apariencia es tuya: yo solo opino.</footer>
+</div></body></html>
