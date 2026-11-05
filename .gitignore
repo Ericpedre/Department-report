@@ -1,0 +1,12 @@
+.env
+fotos/
+diag/
+logs/
+publish/
+*.pyc
+__pycache__/
+
+# almacen de mercado: la base crece sola y el historico son copias crudas
+mercado.db
+historico/
+venta_crudo.json

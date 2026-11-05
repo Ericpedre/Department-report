@@ -1,0 +1,42 @@
+# Unidad del buscador diario. Vive en el repo; install.sh la enlaza a
+# ~/.config/systemd/user/. No editar la copia enlazada: se edita esta.
+#
+# %h = home del usuario, resuelto por systemd. Asi la unidad no lleva
+# /home/eric escrito a mano y el repo sigue siendo portable.
+[Unit]
+Description=Buscador diario de apartamentos en Encuentra24
+Documentation=file:%h/Proyects/loopsAi/DECISIONES.md
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Proyects/loopsAi
+
+# Mismo PATH que tenia el crontab. claude vive en ~/.local/bin.
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:%h/.local/bin
+
+# La corrida puede tardar: ahora son DOS perfiles, cada uno con su espera de
+# RAM (hasta 6 min) y su llamada a Claude, mas el fetch de tres categorias.
+# Sin esto, systemd la mataria a los 90 segundos.
+TimeoutStartSec=5400
+
+# StandardOutput=append: abre el archivo ANTES de ExecStart, asi que el
+# mkdir -p de run.sh llegaria tarde: sin logs/ el servicio no arrancaria.
+ExecStartPre=/bin/mkdir -p %h/Proyects/loopsAi/logs
+
+# Pausa e intervalo entre corridas (programacion.conf). Corre ANTES que los
+# ExecStartPre: si dice que hoy no, la unidad se saltea limpia, sin esperar
+# red, sin request a Encuentra24 y sin aviso. Su salida va a cron.log.
+ExecCondition=%h/Proyects/loopsAi/systemd/condicion.sh
+
+# Cuando la Pi estuvo apagada, Persistent= dispara esta corrida a los pocos
+# segundos del arranque, cuando el WiFi todavia no asocio. Sin esta espera la
+# corrida de recuperacion fallaria por red y GASTARIA la marca del dia:
+# el catch-up quedaria hecho pero sin reporte. Hasta 5 min, nunca bloquea.
+ExecStartPre=/bin/bash -c 'for i in $(seq 1 60); do curl -s --max-time 5 -o /dev/null https://github.com && { echo "red lista tras $((i*5))s"; exit 0; }; sleep 5; done; echo "sin red tras 5 min; arranco igual"; exit 0'
+
+ExecStart=%h/Proyects/loopsAi/run.sh
+
+# Se conserva el nombre cron.log para no romper el `tail -f` de siempre,
+# aunque ahora lo escriba systemd y no cron.
+StandardOutput=append:%h/Proyects/loopsAi/logs/cron.log
+StandardError=inherit

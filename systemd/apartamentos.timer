@@ -1,0 +1,25 @@
+# Timer del buscador diario. Vive en el repo; install.sh lo enlaza a
+# ~/.config/systemd/user/.
+[Unit]
+Description=Dispara el buscador de apartamentos entre las 7:00 y las 8:00
+
+[Timer]
+# Hora local: la Pi esta en America/Panama, systemd usa la TZ del sistema.
+OnCalendar=*-*-* 07:00:00
+
+# Si la Pi estuvo apagada a las 7:00, corre UNA sola vez al encender, sin
+# importar cuantos dias pasaron. Verificado: 5 dias perdidos = 1 corrida.
+# Esto es lo que cron no hacia y por lo que se migro.
+Persistent=true
+
+# Hora al azar entre 7:00 y 8:00, distinta cada dia (FixedRandomDelay=false
+# por defecto): que el sitio no vea un cliente que llega siempre al mismo
+# segundo. Tambien aplica a la corrida de recuperacion de Persistent=.
+RandomizedDelaySec=1h
+AccuracySec=1min
+
+# El timer dispara todos los dias; la pausa y el "cada N dias" los decide
+# systemd/condicion.sh segun programacion.conf.
+
+[Install]
+WantedBy=timers.target

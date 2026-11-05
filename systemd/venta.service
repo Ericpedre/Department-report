@@ -1,0 +1,37 @@
+# Crawl SEMANAL de apartamentos en venta. Vive en el repo; install.sh lo enlaza
+# a ~/.config/systemd/user/. No editar la copia enlazada: se edita esta.
+#
+# Es una unidad APARTE de apartamentos.service a proposito: si el crawl de venta
+# se rompe o el sitio lo bloquea, la corrida diaria que le manda el reporte a
+# Eric no se entera. No comparten nada mas que mercado.db.
+[Unit]
+Description=Crawl semanal de apartamentos en venta (almacen de mercado)
+Documentation=file:%h/Proyects/loopsAi/DECISIONES.md
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Proyects/loopsAi
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:%h/.local/bin
+
+# 155 paginas a 3 s son ~8 minutos en el mejor caso; con reintentos y una Pi
+# cargada puede irse al doble. No llama a Claude, asi que no necesita la espera
+# de RAM que si necesita la corrida diaria.
+TimeoutStartSec=3600
+
+ExecStartPre=/bin/mkdir -p %h/Proyects/loopsAi/logs
+
+# Respeta la misma pausa que el diario (programacion.conf). Si hoy no toca, se
+# saltea limpio, sin una sola request. Corre antes de los ExecStartPre.
+ExecCondition=%h/Proyects/loopsAi/systemd/condicion.sh venta
+
+# Misma espera de red que el diario: con Persistent=true, una corrida de
+# recuperacion sale a los segundos del arranque, cuando el WiFi todavia no
+# asocio. Sin esto gastaria la marca de la semana sin bajar nada.
+ExecStartPre=/bin/bash -c 'for i in $(seq 1 60); do curl -s --max-time 5 -o /dev/null https://github.com && { echo "red lista tras $((i*5))s"; exit 0; }; sleep 5; done; echo "sin red tras 5 min; arranco igual"; exit 0'
+
+# flock propio: no comparte el candado con run.sh porque no comparten estado.
+# Lo unico en comun es mercado.db, y SQLite ya serializa las escrituras.
+ExecStart=/usr/bin/flock -n %h/Proyects/loopsAi/logs/.venta.lock %h/Proyects/loopsAi/venta.py
+
+StandardOutput=append:%h/Proyects/loopsAi/logs/venta.log
+StandardError=inherit

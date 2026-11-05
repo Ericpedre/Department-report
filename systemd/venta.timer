@@ -1,0 +1,21 @@
+# Timer del crawl semanal de venta. Vive en el repo; install.sh lo enlaza.
+[Unit]
+Description=Dispara el crawl de venta los domingos entre las 10:00 y las 11:00
+
+[Timer]
+# Domingo 10:00 + hasta 1 h al azar, hora local (la Pi esta en America/Panama).
+# No a las 7:00: ahi corre el buscador diario, y no tiene sentido pelearle la
+# RAM ni el ancho de banda a la corrida que de verdad importa. Era a las 9:00,
+# pero desde el 2026-10-01 el diario arranca al azar entre 7 y 8 y puede
+# terminar pasadas las 9; a las 10 hay margen.
+OnCalendar=Sun *-*-* 10:00:00
+RandomizedDelaySec=1h
+
+# Si la Pi estuvo apagada el domingo, corre UNA vez al encender. Un crawl de
+# venta atrasado sigue sirviendo: los precios de venta se mueven por mes.
+Persistent=true
+
+AccuracySec=5min
+
+[Install]
+WantedBy=timers.target
